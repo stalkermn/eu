@@ -11,8 +11,9 @@
 
 %% API
 -export([
-  req/6, 	    %% Post, Put, Delete Only
-  req_get/3 	%% Get Only
+  req/6,      %% Post, Put, Delete Only
+  req_get/3,  %% Get Only
+  url_encode/1
 ]).
 
 -export([get_unique_ref/1, get_conv_ref/0]).
@@ -47,3 +48,15 @@ minimize_resp(Resp) ->
       {error, HttpCode, RespBody};
     Any -> Any
   end.
+
+-spec(url_encode(formdata()) -> string()).
+url_encode(Data) ->
+  url_encode(Data,"").
+
+url_encode([],Acc) ->
+  Acc;
+
+url_encode([{Key,Value}|R],"") ->
+  url_encode(R, edoc_lib:escape_uri(Key) ++ "=" ++ edoc_lib:escape_uri(Value));
+url_encode([{Key,Value}|R],Acc) ->
+  url_encode(R, Acc ++ "&" ++ edoc_lib:escape_uri(Key) ++ "=" ++ edoc_lib:escape_uri(Value)).
