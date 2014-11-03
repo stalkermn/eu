@@ -49,7 +49,6 @@ minimize_resp(Resp) ->
     Any -> Any
   end.
 
--spec(url_encode(formdata()) -> string()).
 url_encode(Data) ->
   url_encode(Data,"").
 
